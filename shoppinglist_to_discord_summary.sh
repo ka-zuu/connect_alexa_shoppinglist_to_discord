@@ -26,7 +26,7 @@ sed "s/$/\\\n/" |
 tr -d "\n" > $tmp-shoppinglist
 
 # Discordに投稿
-curl -X POST -H "Content-Type: application/json" -d "{\"content\": \"買うものリスト\n：$(cat $tmp-shoppinglist)\"}" ${DISCORD_WEBHOOK_URL}
+curl -X POST -H "Content-Type: application/json" -d "{\"content\": \"買うものリスト：\n$(cat $tmp-shoppinglist)\"}" ${DISCORD_WEBHOOK_URL}
 
 # 一時ファイルの削除
 rm -f $tmp-*

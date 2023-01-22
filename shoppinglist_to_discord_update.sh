@@ -33,7 +33,7 @@ fi
 # 差分がある場合は、Discordに投稿
 if [ -s $tmp-shoppinglist-diff ]; then
     curl -X POST -H "Content-Type: application/json" \
-    -d "{\"content\": \"買うものリストの更新\n：$(cat $tmp-shoppinglist-diff)\"}" ${DISCORD_WEBHOOK_URL}
+    -d "{\"content\": \"買うものリストの更新がありました：\n$(cat $tmp-shoppinglist-diff)\"}" ${DISCORD_WEBHOOK_URL}
 fi
 
 # 前回の買い物リストファイルを更新
