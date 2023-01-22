@@ -20,12 +20,17 @@ curl https://api.todoist.com/sync/v9/sync \
     -d sync_token=* \
     -d resource_types='["projects","items"]' |
 # 買い物リストprojectのアイテムで、チェックが入っていないものを抽出
-jq -r '.items[] | select(.project_id=="2306353864") | select(.checked==false) | .content' |
-# 改行を\nに変換して一行にする
-sed -z "s/¥n/¥¥n/g"
+jq -r '.items[] | select(.project_id=="'${SHOPPINGLIST_PROJECT_ID}'") | select(.checked==false) | .content' |
+# 改行を削除して、一行にまとめる
+sed "s/$/\\\n/" |
+tr -d "\n" > $tmp-shoppinglist
 
 # Discordに投稿
-#curl -X POST -H "Content-Type: application/json" -d "{\"content\": \"$(cat $tmp-shoppinglist)\"}" ${DISCORD_WEBHOOK_URL}
+curl -X POST -H "Content-Type: application/json" -d "{\"content\": \"$(cat $tmp-shoppinglist)\"}" ${DISCORD_WEBHOOK_URL}
 
+# 一時ファイルの削除
+rm -f $tmp-*
 
+# 終了
+exit 0
 
