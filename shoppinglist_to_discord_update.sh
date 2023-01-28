@@ -25,6 +25,10 @@ jq -r '.items[] | select(.project_id=="'${SHOPPINGLIST_PROJECT_ID}'") | select(.
 # 前回の買い物リストとの差分を取得
 if [ -s ${work_dir}/shoppinglist_old/shoppinglist.txt ]; then
     diff $tmp-shoppinglist ${work_dir}/shoppinglist_old/shoppinglist.txt |
+    # 差分の行だけにする
+    grep -e "^>" -e "^<" |
+    # 差分を日本語にする
+    sed -e "s/^> /追加：/" -e "s/^< /削除：/" |
     # 改行を削除して、一行にまとめる
     sed "s/$/\\\n/" |
     tr -d "\n" > $tmp-shoppinglist-diff
@@ -33,7 +37,7 @@ fi
 # 差分がある場合は、Discordに投稿
 if [ -s $tmp-shoppinglist-diff ]; then
     curl -X POST -H "Content-Type: application/json" \
-    -d "{\"content\": \"買うものリストの更新がありました：\n$(cat $tmp-shoppinglist-diff)\"}" ${DISCORD_WEBHOOK_URL}
+    -d '{"content": "買うものリストの更新がありました：\n'"$(cat $tmp-shoppinglist-diff)"'"}' ${DISCORD_WEBHOOK_URL}
 fi
 
 # 前回の買い物リストファイルを更新
