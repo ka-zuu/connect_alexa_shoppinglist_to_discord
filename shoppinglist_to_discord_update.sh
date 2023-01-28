@@ -28,7 +28,7 @@ if [ -s ${work_dir}/shoppinglist_old/shoppinglist.txt ]; then
     # 差分の行だけにする
     grep -e "^>" -e "^<" |
     # 差分を日本語にする
-    sed -e "s/^> /追加：/" -e "s/^< /削除：/" |
+    sed -e "s/^< /追加：/" -e "s/^> /削除：/" |
     # 改行を削除して、一行にまとめる
     sed "s/$/\\\n/" |
     tr -d "\n" > $tmp-shoppinglist-diff
