@@ -8,7 +8,7 @@ tmp=$(mktemp)
 work_dir="$(dirname $0)" # スクリプトのあるディレクトリ
 filename="$(basename $0)" # スクリプトのファイル名
 mkdir -p ${work_dir}/log # ログディレクトリ
-exec 2> ${work_dir}/log/${filename}.$(date +%Y%m%d_%H%M%S) # 標準エラー出力をログファイルに出力
+exec > ${work_dir}/log/${filename}.$(date +%Y%m%d_%H%M%S) 2>&1 # 標準出力とエラー出力をログファイルに出力
 cd ${work_dir}
 
 # 外部の変数ファイルを取得
